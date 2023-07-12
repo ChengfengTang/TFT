@@ -6,6 +6,9 @@ from mss import mss
 import pyautogui
 import pydirectinput
 import concurrent.futures
+import editdistance
+
+
 
 class ThinkFast:
     def __init__(self, text):
@@ -33,7 +36,6 @@ class ThinkFast:
         return (i, temp)
 
     def find_and_click_text(self):
-
         with mss() as sct:
             screenshot_np = np.array(sct.grab(sct.monitors[1]))
 
@@ -43,18 +45,23 @@ class ThinkFast:
         for i, temp in results:
             print(temp, end=' ')
             if any(text in temp for text in target_text):
+                pydirectinput.PAUSE = 0.02
                 pydirectinput.FAILSAFE = False
-                pyautogui.moveTo(420 + i * 200, 1000)
-                pyautogui.mouseDown() # Way faster than mouseDownUP
-                pyautogui.mouseUp()
-        pyautogui.moveTo(350, 1020)
-        pyautogui.mouseDown()
-        pyautogui.mouseUp()
-        # End timing heredddddddd
+                pydirectinput.moveTo(420 + i * 200, 1000)
+                pydirectinput.mouseDown()
+                pydirectinput.mouseUp()
+            time.sleep(0.02)
+        time.sleep(0.15) #can change up to 0.35
+        pydirectinput.moveTo(350, 1020)
+        pydirectinput.mouseDown()
+        pydirectinput.PAUSE = 0.1
+        pydirectinput.mouseUp()
+        time.sleep(0.02)
+        # End timing
 
 
 screen_width, screen_height = pyautogui.size()
-target_text = ["Maokai", "Kayle", "Poppy"]
+target_text = ["Kayle", "Maokai", "Poppy", "PopPY"]
 tf = ThinkFast(target_text)
 while True:
     # Start timing here
